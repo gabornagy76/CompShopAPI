@@ -1,0 +1,48 @@
+﻿using CompShopAPI.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CompShopAPI.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ComputersController : ControllerBase
+    {
+
+        // Hogy tudjunk a végpontjainkon csatlakozni az adatbázishoz és a táblákon múűveleteket végezni:
+        CompShopDBContext context = new CompShopDBContext();
+
+        // Post végpont
+        public ActionResult AddNewComputer(AddComputerDTO dto)
+        {
+            try
+            {
+                var computerEgyed = new Computers
+                {
+                    Brand = dto.Brand,
+                    Type = dto.Type,
+                    Display = dto.Display
+                };
+
+                // LINQ segítségével gyorsabban végezhetünk műveleteket bármilyen kollekción (listán):
+                context.computers.Add(computerEgyed);
+
+                context.SaveChanges();
+
+                return StatusCode(201, new
+                {
+                    message = "Sikeres adatfelvitel!",
+                    result = computerEgyed
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, new
+                {
+                    message = ex.Message,
+                    belsoHiba = ex.InnerException?.Message
+                });
+            }
+        }
+    }
+}
