@@ -1,0 +1,6 @@
+@CompShopAPI_HostAddress = http://localhost:5084
+
+GET {{CompShopAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
