@@ -13,6 +13,7 @@ namespace CompShopAPI.Controllers
         CompShopDBContext context = new CompShopDBContext();
 
         // Post végpont
+        [HttpPost]
         public ActionResult AddNewComputer(AddComputerDTO dto)
         {
             try
@@ -21,7 +22,11 @@ namespace CompShopAPI.Controllers
                 {
                     Brand = dto.Brand,
                     Type = dto.Type,
-                    Display = dto.Display
+                    Display = dto.Display,
+
+                    // Meg kell adni ezesetben a timestamp mezőket is, hiszen azt most már nem az adatbázis kezeli.
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
                 };
 
                 // LINQ segítségével gyorsabban végezhetünk műveleteket bármilyen kollekción (listán):
