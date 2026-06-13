@@ -1,6 +1,9 @@
+using CompShopAPI.Models;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<CompShopDBContext>();
 
 // Add services to the container.
 

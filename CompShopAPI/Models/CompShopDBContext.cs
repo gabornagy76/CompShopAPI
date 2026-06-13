@@ -14,6 +14,8 @@ namespace CompShopAPI.Models
         { 
         }
 
+        public DbSet<Computers> computers { get; set; }
+
         // Függvény a kapcsolat létrehozásához
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
