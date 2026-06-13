@@ -105,5 +105,80 @@ namespace CompShopAPI.Controllers
             }
         }
 
+        [HttpDelete]
+        public ActionResult DeleteComputerById([FromQuery] int id)
+        {
+            try
+            {
+                var torlendoComputer = context.computers.FirstOrDefault(x => x.Id == id);
+
+                // Nézzük meg, hogy létezik-e a törlésre ítélt egyed:
+                if (torlendoComputer != null)
+                {
+                    context.computers.Remove(torlendoComputer);
+
+                    context.SaveChanges();
+
+                    return StatusCode(200, new
+                    {
+                        message = "Sikeres törlés!",
+                        result = torlendoComputer
+                    });
+                }
+
+                return StatusCode(400, new
+                {
+                    message = "Nem létező rekord!"
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, new
+                {
+                    message = ex.Message,
+                    belsoHiba = ex.InnerException?.Message
+                });
+            }
+        }
+
+        [HttpPut]
+        public ActionResult UpdateComputerById([FromBody] UpdateComputerDTO dto)
+        {
+            try
+            {
+                var frissitendoComputer = context.computers.Find(dto.Id);
+
+                if (frissitendoComputer != null)
+                {
+                    frissitendoComputer.Brand = dto.Brand;
+                    frissitendoComputer.Type = dto.Type;
+                    frissitendoComputer.Display = dto.Display;
+                    frissitendoComputer.UpdatedAt = DateTime.Now;
+
+                    context.SaveChanges();
+
+                    return StatusCode(200, new
+                    {
+                        message = "Sikeres frissítés!",
+                        result = frissitendoComputer
+                    });
+                }
+
+                return StatusCode(400, new
+                {
+                    message = "Nem létező rekord!"
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, new
+                {
+                    message = ex.Message,
+                    belsoHiba = ex.InnerException?.Message
+                });
+            }
+        }
     }
 }
