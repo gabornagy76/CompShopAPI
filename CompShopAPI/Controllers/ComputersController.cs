@@ -49,5 +49,61 @@ namespace CompShopAPI.Controllers
                 });
             }
         }
+
+        [HttpGet]
+        public ActionResult GetAllComputers()
+        {
+            try
+            {
+                return StatusCode(200, new
+                {
+                    message = "Sikeres lekérdezés!",
+                    // LINQ segítségével egy listává alakítva kérdezünk le:
+                    result = context.computers.ToList()
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, new
+                {
+                    message = ex.Message,
+                    belsoHiba = ex.InnerException?.Message
+                });
+            }
+        }
+
+
+        [HttpGet("{id}")]
+        public ActionResult GetComputerById(int id)
+        {
+            try
+            {
+                // Az elsődleges kulcs keresésére szolgáló metódus a Find().
+                var computer = context.computers.Find(id);
+
+                if (computer == null)
+                {
+                    return NotFound(new
+                    {
+                        message = "A számítógép nem található!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    message = "Sikeres lekérdezés!",
+                    result = computer
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, new
+                {
+                    message = ex.Message,
+                    belsoHiba = ex.InnerException?.Message
+                });
+            }
+        }
+
     }
 }
